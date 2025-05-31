@@ -80,7 +80,8 @@ exports.createProductValidator = [
 		.bail()
 		.custom(async (categoryId) => {
 			const category = await Category.findById(categoryId);
-			if (!category) throw new AppError("There is no category with this id");
+			if (!category)
+				throw new AppError("There is no category with this id", 404);
 			return true;
 		}),
 	check("subCategory")
@@ -188,7 +189,7 @@ exports.updateProductValidator = [
 		.bail()
 		.custom((value, { req }) => {
 			if (value >= req.body.price)
-				throw new AppError("priceAfterDiscount must be lower than price");
+				throw new AppError("priceAfterDiscount must be lower than price", 400);
 			return true;
 		}),
 	check("colors")

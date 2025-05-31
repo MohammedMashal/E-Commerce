@@ -15,6 +15,7 @@ exports.createBrandValidator = [
 		.bail()
 		.isLength({ max: 32 })
 		.withMessage("Too long Brand name"),
+	check("image").optional(),
 	validatorController,
 ];
 

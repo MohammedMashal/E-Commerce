@@ -2,6 +2,7 @@ const { check } = require("express-validator");
 
 const Review = require("../../models/reviewModel");
 const Product = require("../../models/productModel");
+const User = require("../../models/userModel");
 
 const AppError = require("../appError");
 
@@ -31,7 +32,7 @@ exports.createReviewValidator = [
 		//check if user id is current user logged in
 		.custom((id, { req }) => {
 			if (req.user._id !== id)
-				throw new AppError("This ID isn't current user logged in ID", 400);
+				throw new AppError("This ID isn't current user logged in ID", 401);
 			return true;
 		}),
 	check("product")
@@ -40,7 +41,7 @@ exports.createReviewValidator = [
 		.bail()
 		.custom(async (productId) => {
 			const product = await Product.findById(productId);
-			if (!product) throw new AppError("There is no product with this ID", 400);
+			if (!product) throw new AppError("There is no product with this ID", 404);
 			return true;
 		})
 		//check if current user logged in made a review on the same product before
@@ -69,8 +70,9 @@ exports.getReviewsValidator = [
 exports.updateReviewValidator = [
 	checkId("Review").custom(async (reviewId, { req }) => {
 		const review = await Review.findById(reviewId);
+		if (!review) throw new AppError("There is no review with this id", 404);
 		if (review.user._id !== req.user._id)
-			throw new AppError("You are not allowed to perform this action", 400);
+			throw new AppError("You are not allowed to perform this action", 401);
 		return true;
 	}),
 	validatorController,
@@ -79,8 +81,12 @@ exports.updateReviewValidator = [
 exports.deleteReviewValidator = [
 	checkId("Review").custom(async (reviewId, { req }) => {
 		const review = await Review.findById(reviewId);
-		if (review.user._id !== req.user._id)
-			throw new AppError("You are not allowed to perform this action", 400);
+		if (!review) throw new AppError("There is no review with this id", 404);
+		if (
+			(await User.findById(review.user._id)).role !== "admin" &&
+			review.user._id !== req.user._id
+		)
+			throw new AppError("You are not allowed to perform this action", 401);
 		return true;
 	}),
 	validatorController,

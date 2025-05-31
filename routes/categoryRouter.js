@@ -12,6 +12,8 @@ router
 	.post(
 		authController.protect,
 		authController.restrictTo("admin"),
+		categoryController.uploadCategoryImage,
+		categoryController.resizeCategoryImage,
 		CategoryValidator.createCategoryValidator,
 		categoryController.createCategory
 	)
@@ -23,6 +25,8 @@ router
 	.patch(
 		authController.protect,
 		authController.restrictTo("admin"),
+		categoryController.uploadCategoryImage,
+		categoryController.resizeCategoryImage,
 		CategoryValidator.updateCategoryValidator,
 		categoryController.updateCategory
 	)

@@ -5,12 +5,6 @@ const orderController = require("../controllers/orderController");
 
 const router = express.Router();
 
-router.post(
-	"/webhook-checkout",
-	express.raw({ type: "application/json" }), // Needed for Stripe signature verification
-	orderController.webhookCheckout
-);
-
 router.use(authController.protect);
 
 router.post(

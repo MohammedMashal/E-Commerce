@@ -1,6 +1,11 @@
 const handlerFactory = require("./handlerFactory");
+const { uploadSingleImage, resizeImage } = require("./uploadImageController");
 
 const Brand = require("../models/brandModel");
+
+exports.uploadBrandImage = uploadSingleImage("image");
+
+exports.resizeBrandImage = resizeImage("brand", "image");
 
 // @desc    create new brand
 // @route   Post /api/v1/brands

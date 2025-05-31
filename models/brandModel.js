@@ -7,6 +7,8 @@ const brandSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Brand must have a name"],
 			unique: true,
+			trim: true,
+			lowercase: true,
 			minlength: [3, "Too short Brand name"],
 			maxlength: [32, "Too long Brand name"],
 		},

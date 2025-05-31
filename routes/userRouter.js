@@ -22,10 +22,10 @@ router.route("/myReviews").get(userController.getLoggedUserReviews);
 router
 	.route("/updateMe")
 	.patch(
-		userController.updateLoggedUserData,
-		userValidator.updateUserValidator,
 		userController.uploadUserImage,
 		userController.resizeImage,
+		userController.updateLoggedUserData,
+		userValidator.updateUserValidator,
 		userController.updateUser
 	);
 

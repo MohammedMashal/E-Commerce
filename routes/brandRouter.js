@@ -11,6 +11,8 @@ router
 	.post(
 		authController.protect,
 		authController.restrictTo("admin"),
+		brandController.uploadBrandImage,
+		brandController.resizeBrandImage,
 		brandValidator.createBrandValidator,
 		brandController.createBrand
 	)
@@ -22,6 +24,8 @@ router
 	.patch(
 		authController.protect,
 		authController.restrictTo("admin"),
+		brandController.uploadBrandImage,
+		brandController.resizeBrandImage,
 		brandValidator.updateBrandValidator,
 		brandController.updateBrand
 	)

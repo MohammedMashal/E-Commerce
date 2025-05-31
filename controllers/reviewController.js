@@ -20,7 +20,7 @@ exports.createFilterObj = (req, res, next) => {
 
 // @desc    create new review
 // @route   Post /api/v1/reviews
-// @access  private
+// @access  private/user
 exports.createReview = handlerFactory.createOne(Review);
 
 // @desc    get all reviews
@@ -35,10 +35,10 @@ exports.getReview = handlerFactory.getOne(Review);
 
 // @desc    update specific review by id
 // @route   Patch /api/v1/reviews/:id
-// @access  public
+// @access  private/user
 exports.updateReview = handlerFactory.updateOne(Review);
 
 // @desc    delete specific review by id
 // @route   Delete /api/v1/reviews/:id
-// @access  public
+// @access  private/user-admin
 exports.deleteReview = handlerFactory.deleteOne(Review);

@@ -1,8 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const sharp = require("sharp");
-const { v4: uuidv4 } = require("uuid");
 
-const { uploadSingleImage } = require("./uploadImageController");
+const { uploadSingleImage, resizeImage } = require("./uploadImageController");
 
 const AppError = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
@@ -14,19 +12,7 @@ const Review = require("../models/reviewModel");
 exports.uploadUserImage = uploadSingleImage("profileImg");
 
 //Image processing
-exports.resizeImage = asyncHandler(async (req, res, next) => {
-	const fileName = `user-${uuidv4()}-${Date.now()}.jpeg`;
-
-	if (!req.file) return next();
-
-	await sharp(req.file.buffer)
-		.resize(600, 600)
-		.toFormat("jpeg")
-		.jpeg({ quality: 95 })
-		.toFile(`uploads/users/${fileName}`);
-	req.body.profileImg = fileName;
-	next();
-});
+exports.resizeUserImage = resizeImage("user", "profileImg");
 
 // @desc    create new user
 // @route   Post /api/v1/users
@@ -48,11 +34,10 @@ exports.getUser = handlerFactory.getOne(User);
 // @access  private
 exports.updateUser = asyncHandler(async (req, res, next) => {
 	const filterObj = {};
-	if (req.name) filterObj.name = req.body.name;
-	if (req.phone) filterObj.phone = req.body.phone;
-	if (req.email) filterObj.email = req.body.email;
-	if (req.profileImg) filterObj.profileImg = req.body.profileImg;
-	if (req.role) filterObj.role = req.body.role;
+	if (req.body.name) filterObj.name = req.body.name;
+	if (req.body.phone) filterObj.phone = req.body.phone;
+	if (req.body.email) filterObj.email = req.body.email;
+	if (req.body.profileImg) filterObj.profileImg = req.body.profileImg;
 
 	const document = await User.findByIdAndUpdate(req.params.id, filterObj, {
 		new: true,

@@ -12,6 +12,8 @@ router
 	.post(
 		authController.protect,
 		authController.restrictTo("admin"),
+		productController.uploadProductImages,
+		productController.resizeProductImages,
 		productValidator.createProductValidator,
 		productController.createProduct
 	)
@@ -23,6 +25,8 @@ router
 	.patch(
 		authController.protect,
 		authController.restrictTo("admin"),
+		productController.uploadProductImages,
+		productController.resizeProductImages,
 		productValidator.updateProductValidator,
 		productController.updateProduct
 	)

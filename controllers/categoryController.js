@@ -1,6 +1,11 @@
 const handlerFactory = require("./handlerFactory");
+const { uploadSingleImage, resizeImage } = require("./uploadImageController");
 
 const Category = require("../models/categoryModel");
+
+exports.uploadCategoryImage = uploadSingleImage("image");
+
+exports.resizeCategoryImage = resizeImage("category", "image");
 
 // @desc    create new category
 // @route   Post /api/v1/categories
